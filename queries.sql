@@ -1,9 +1,9 @@
 ## Part 1: Test it with SQL
 
-int id
-String employer
-String name
-String skills
+INT id
+VARCHAR employer
+VARCHAR name
+VARCHAR skills
 
 ## Part 2: Test it with SQL
 
