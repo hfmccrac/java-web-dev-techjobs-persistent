@@ -32,20 +32,23 @@ public class ListController {
 
     static HashMap<String, String> columnChoices = new HashMap<>();
 
+    //Shows radio buttons to select on "Search" page
     public ListController () {
 
         columnChoices.put("all", "All");
         columnChoices.put("employer", "Employer");
         columnChoices.put("skill", "Skill");
-        columnChoices.put("skills", "Skills");
+        columnChoices.put("job", "Job");
 
     }
 
+    //Shows page for when "List" is selected
     @RequestMapping("")
     public String list(Model model) {
 
         model.addAttribute("employers", employerRepository.findAll());
         model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("jobs", jobRepository.findAll());
 
         return "list";
     }

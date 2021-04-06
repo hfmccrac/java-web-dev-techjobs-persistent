@@ -45,6 +45,7 @@ public class HomeController {
         model.addAttribute("title", "Add Job");
         model.addAttribute(new Job());
         model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
         return "add";
     }
 
@@ -53,31 +54,30 @@ public class HomeController {
                                        Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Add Job");
-            return "add";
+            return "redirect:/add";
+        } else {
+
+            Optional optEmployer = employerRepository.findById(employerId);
+            if (optEmployer.isPresent()) {
+                Employer employer = (Employer) optEmployer.get();
+                newJob.setEmployer(employer);
+                List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+                newJob.setSkills(skillObjs);
+                jobRepository.save(newJob);
+                return "add";
+            } else {
+                return "redirect:";
+            }
         }
 
-        Optional result = employerRepository.findById(employerId);
-        if (result.isPresent()){
-
-            Employer employer = (Employer) result.get();
-            newJob.setEmployer(employer);
-            List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-            newJob.setSkills(skillObjs);
-        }
-
-        jobRepository.save(newJob);
-
-        return "redirect:";
     }
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
 
-        Optional result = jobRepository.findById(jobId);
-        if (result.isPresent()){
-
-            Job job = (Job) result.get();
+        Optional optJob = jobRepository.findById(jobId);
+        if (optJob.isPresent()){
+            Job job = (Job) optJob.get();
             model.addAttribute("job", job);
 
         } else {
