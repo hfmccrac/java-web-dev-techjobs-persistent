@@ -14,8 +14,6 @@ public class Job extends AbstractEntity{
 
     @ManyToMany
     private List<Skill> skills;
-//    private String Employer;
-//    private String skills;
 
     public Job() {
     }
